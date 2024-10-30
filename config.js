@@ -3,22 +3,22 @@ import { engine } from "express-handlebars";
 import pg from "pg";
 const { Pool } = pg;
 import cookieParser from "cookie-parser";
-import multer from "multer";
-const upload = multer({ dest: "public/uploads/" });
 import sessions from "express-session";
+import path from "path";
+import fs from "fs";
 
 export function createApp(dbconfig) {
   const app = express();
 
-  const pool = new Pool(dbconfig);
-
-  app.engine("handlebars", engine());
-  app.set("view engine", "handlebars");
-  app.set("views", "./views");
-
   app.use(express.static("public"));
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
+
+  app.engine("handlebars", ENGINE);
+  app.set("view engine", "handlebars");
+
+  const pool = new Pool(dbconfig);
+  app.locals.pool = pool;
 
   app.use(
     sessions({
@@ -29,9 +29,21 @@ export function createApp(dbconfig) {
     })
   );
 
-  app.locals.pool = pool;
-
   return app;
 }
 
-export { upload };
+const ENGINE = engine({
+  helpers: {
+    icon: function (name) {
+      try {
+        // Read the SVG file from the public/icons directory
+        const iconPath = path.resolve("public/icons", name + ".svg");
+        // Return the content of the SVG file
+        return fs.readFileSync(iconPath, "utf8");
+      } catch (err) {
+        console.error("Error reading SVG file:", err);
+        return "";
+      }
+    },
+  },
+});
