@@ -1,0 +1,51 @@
+<footer>
+    <button class="action">{{{icon "heart"}}}</button>
+    <div class="popup">
+        <button class="action" onclick="togglePopup(event)">{{{icon "plus"}}}</button>
+        <div class="content">
+            <div class="header">
+                <h1>Neuer Standort</h1>
+                <button onclick="togglePopup(event)">{{{icon "plus"}}}</button>
+            </div>
+            <form>
+                <input type="text" placeholder="Name" required />
+                <select required>
+                    <option value="" disabled selected>Standort Typ</option>
+                    <option value="type1">Type 1</option>
+                    <option value="type2">Type 2</option>
+                </select>
+                <div>
+                    <input type="text" placeholder="Strasse" required />
+                    <input type="text" placeholder="Nr." required />
+                </div>
+                <div>
+                    <input type="text" placeholder="PLZ" required />
+                    <input type="text" placeholder="Ort" required />
+                </div>
+                <input type="text" placeholder="Land" required />
+                <button type="submit">Hinzufügen</button>
+            </form>
+        </div>
+    </div>
+</footer>
+
+<style>
+    footer {
+        display: flex;
+        justify-content: space-between;
+        position: fixed;
+        bottom: 0;
+        padding: 2.5%;
+        width: 95%;
+    }
+
+    footer button.action {
+        width: 50px;
+        height: 50px;
+        padding: 10px;
+        border-radius: 50%;
+        border: none;
+        background-color: #333;
+        color: white;
+    }
+</style>
