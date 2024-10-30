@@ -1,0 +1,58 @@
+<div class="card">
+    <h1>{{name}}</h1>
+
+    <div class="rating" onclick="this.parentElement.classList.toggle('open')">
+        <span>{{rating}}</span>
+        {{#each (stars rating)}}
+        {{{icon this}}}
+        {{/each}}
+        <span>({{reviews.length}})</span>
+    </div>
+
+    <p>#{{category}}</p>
+
+    <div class="actions">
+        <button class="action">{{{icon "heart-plus"}}}</button>
+        <div class="popup">
+            <button class="action" onclick="togglePopup(event)">{{{icon "star-plus"}}}</button>
+            <div class="content">
+                <div class="header">
+                    <h1>Meine Bewertung</h1>
+                    <button onclick="togglePopup(event)">{{{icon "plus"}}}</button>
+                </div>
+                <form>
+                    <div class="stars">
+                        <input type="radio" id="{{name}}-star5" name="rating" value="5" required />
+                        <label for="{{name}}-star5">{{{icon "star-full"}}}</label>
+                        <input type="radio" id="{{name}}-star4" name="rating" value="4" required />
+                        <label for="{{name}}-star4">{{{icon "star-full"}}}</label>
+                        <input type="radio" id="{{name}}-star3" name="rating" value="3" required />
+                        <label for="{{name}}-star3">{{{icon "star-full"}}}</label>
+                        <input type="radio" id="{{name}}-star2" name="rating" value="2" required />
+                        <label for="{{name}}-star2">{{{icon "star-full"}}}</label>
+                        <input type="radio" id="{{name}}-star1" name="rating" value="1" required />
+                        <label for="{{name}}-star1">{{{icon "star-full"}}}</label>
+                    </div>
+                    <textarea name="comment" placeholder="Kommentar" required></textarea>
+                    <button type="submit">Speichern</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{#if reviews.length}}
+    <div class="reviews">
+        {{#each reviews}}
+        <div class="review">
+            <h2>{{username}}</h2>
+            <div class="rating">
+                {{#each (stars this.rating)}}
+                {{{icon this}}}
+                {{/each}}
+            </div>
+            <p>{{text}}</p>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+</div>

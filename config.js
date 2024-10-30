@@ -45,5 +45,29 @@ const ENGINE = engine({
         return "";
       }
     },
+    stars: function (rating) {
+      let fullStars = Math.floor(rating);
+      let halfStar = rating % 1 >= 0.5 ? 1 : 0;
+      let emptyStars = 5 - fullStars - halfStar;
+
+      let stars = [];
+
+      // full stars
+      for (let i = 0; i < fullStars; i++) {
+        stars.push("star-full");
+      }
+
+      // half star if applicable
+      if (halfStar) {
+        stars.push("star-half-full");
+      }
+
+      // empty stars
+      for (let i = 0; i < emptyStars; i++) {
+        stars.push("star");
+      }
+
+      return stars;
+    },
   },
 });
