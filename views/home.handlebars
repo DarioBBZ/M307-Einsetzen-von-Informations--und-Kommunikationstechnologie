@@ -1,0 +1,93 @@
+{{#each data}}
+{{> card name=this.name rating=this.rating reviews=this.reviews category=this.category reviews=this.reviews }}
+{{/each}}
+
+<style>
+    .card,
+    .card .reviews .review {
+        padding: 15px;
+        gap: 5px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card {
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+    }
+
+    .card .rating {
+        display: flex;
+        gap: 5px;
+        height: 30px;
+        cursor: pointer;
+        align-self: start;
+    }
+
+    .card .rating>span {
+        line-height: 30px;
+    }
+
+    .card .rating>svg {
+        width: 30px;
+    }
+
+    .card .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+    }
+
+    .card .actions button.action {
+        width: 25px;
+        height: 25px;
+        border: none;
+        color: black;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    .card .actions .stars {
+        flex-direction: row-reverse;
+        justify-content: center;
+    }
+
+    .card .actions .stars label {
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        color: #ccc;
+    }
+
+    .card .actions .stars input {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+    }
+
+    .card .actions .stars label:hover,
+    .card .actions .stars label:hover~label,
+    .card .actions .stars input[type="radio"]:checked+label,
+    .card .actions .stars input[type="radio"]:checked+label~label {
+        color: gold;
+    }
+
+    .card .reviews {
+        margin: -15px;
+        margin-top: 15px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 250ms ease-in-out;
+    }
+
+    .card.open .reviews {
+        max-height: 250px;
+        overflow-y: auto;
+    }
+
+    .card .reviews .review {
+        border-top: 1px solid #ccc;
+        padding: 15px;
+    }
+</style>
