@@ -1,40 +1,40 @@
-```mermaid 
+```mermaid
 ---
 title: Database diagram M307 - (Dario & Chiara)
 ---
 erDiagram
-    User one to many Review: creates
-    User one to many Favorite : has
-    Location one to many Favorite : "is favorited in"
-    Location one to many Review : "is reviewed in"
-    TAG one to many Location : categorizes
+    users one to many reviews: creates
+    users one to many favorites : has
+    locations one to many favorites : "is favorited in"
+    locations one to many reviews : "is reviewed in"
+    tags one to many locations : categorizes
 
-    User {
+    users {
         int id PK
         string name
-        string encodedPassword
+        string password
     }
-    Review {
-        int userId PK, FK
-        int locationId PK, FK
-        string reviewText
+    reviews {
+        int user_id PK, FK
+        int location_id PK, FK
+        string comment
         int stars "between 1-5"
     }
-    Favorite {
-        int userId PK, FK
-        int locationId PK, FK
+    favorites {
+        int user_id PK, FK
+        int location_id PK, FK
     }
-    Location {
+    locations {
         int id PK
         string name
-        int tagId FK
+        int tag_id FK
         string street
-        int houseNumber
-        int zipCode
+        int house_number
+        int zip_code
         string place
         string country
     }
-    TAG {
+    tags {
         int id PK
         string name
     }
