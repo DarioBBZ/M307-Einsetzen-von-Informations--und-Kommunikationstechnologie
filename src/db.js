@@ -12,17 +12,18 @@ export function createDB() {
 
   return {
     auth: new bbz307.Login("users", ["name", "password"], db),
+    locations: async (userId) => (await db.query(locationsQuery(userId))).rows,
     toggleFavoriteLocation: async (userId, locationId) => toggleFavoriteLocation(db, userId, locationId)
   }
 }
 
 const toggleFavoriteLocation = async (db, userId, locationId) => {
-  const { rows } = await db.query(
+  const { rowCount } = await db.query(
     `SELECT 1 FROM favorites WHERE user_id = $1 AND location_id = $2`,
     [userId, locationId]
   );
 
-  if (rows.length === 0) {
+  if (rowCount === 0) {
     await db.query(
       `INSERT INTO favorites (user_id, location_id) VALUES ($1, $2)`,
       [userId, locationId]
@@ -34,3 +35,37 @@ const toggleFavoriteLocation = async (db, userId, locationId) => {
     );
   }
 }
+
+const locationsQuery = (userId) => `
+SELECT 
+    l.id AS id,
+    l.name AS name,
+    ROUND(AVG(r.rating), 1) AS rating,
+    t.name AS category,
+    ${userId ? `
+        EXISTS (
+            SELECT 1
+            FROM favorites f
+            WHERE f.location_id = l.id AND f.user_id = ${userId}
+        ) AS "isFavorited",
+    ` : `
+        FALSE AS "isFavorited",
+    `}
+    JSON_AGG(
+        JSON_BUILD_OBJECT(
+            'name', u.name,
+            'rating', r.rating,
+            'comment', r.comment
+        )
+    ) AS reviews
+FROM 
+    locations l
+JOIN 
+    reviews r ON l.id = r.location_id
+JOIN 
+    users u ON r.user_id = u.id
+JOIN 
+    categories t ON l.category_id = t.id
+GROUP BY 
+    l.id, t.name;
+`;
