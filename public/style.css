@@ -77,3 +77,7 @@ form button {
   border-radius: 5px;
   cursor: pointer;
 }
+
+form p {
+  line-height: 30px;
+}
