@@ -1,16 +1,11 @@
-import { createApp } from "./config.js";
+import { createDB } from "./src/db.js";
+import { createServer } from "./src/server.js";
 
-const app = createApp({
-  user: "autumn_star_7622",
-  host: "168.119.168.41",
-  database: "demo",
-  password: "uaioysdfjoysfdf",
-  port: 18324,
-});
+const server = createServer();
+const db = createDB();
 
-/* Startseite */
-app.get("/", async function (req, res) {
-  res.render("home", {
+server.get("/", async (req, res) => {
+  return res.render("home", {
     data: [
       {
         name: "SYPROS-GYROS",
@@ -44,7 +39,17 @@ app.get("/", async function (req, res) {
   });
 });
 
+// User management
+server.post("/login", async (req, res) => {
+  await db.auth.loginUser(req);
+  res.redirect("/");
+});
+server.get("/logout", async (req, res) => {
+  req.session.destroy();
+  res.redirect("/");
+});
+
 /* Wichtig! Diese Zeilen müssen immer am Schluss der Website stehen! */
-app.listen(3010, () => {
-  console.log(`Example app listening at http://localhost:3010`);
+server.listen(3010, () => {
+  console.log(`🚀 M307 Dario & Chiara server running at http://localhost:3010`);
 });
