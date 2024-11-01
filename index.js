@@ -41,6 +41,15 @@ server.get("/", async (req, res) => {
   });
 });
 
+// Favorite management
+server.post("/favorite", async (req, res) => {
+  const user = await db.auth.loggedInUser(req);
+  if (user) {
+    await db.toggleFavoriteLocation(user.id, req.body.locationId);
+  }
+  res.redirect("/");
+});
+
 // User management
 server.post("/login", async (req, res) => {
   const success = await db.auth.loginUser(req);
