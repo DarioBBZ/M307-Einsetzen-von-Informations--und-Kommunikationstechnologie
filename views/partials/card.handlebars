@@ -12,7 +12,12 @@
     <p>#{{category}}</p>
 
     <div class="actions">
-        <button class="action" {{#if user}}{{else}}disabled{{/if}}>{{{icon "heart-plus"}}}</button>
+        <form action="/favorite" method="post">
+            <fieldset {{#if user}}{{else}}disabled{{/if}}>
+                <input type="hidden" name="locationId" value="{{id}}" />
+                <button class="action {{#if isFavorited}}red{{/if}}" type="submit">{{{icon "heart"}}}</button>
+            </fieldset>
+        </form>
         <div class="popup">
             <button class="action" onclick="togglePopup(event)" {{#if user}}{{else}}disabled{{/if}}>{{{icon
                 "star-full"}}}</button>
