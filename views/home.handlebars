@@ -1,5 +1,5 @@
-{{#each data}}
-{{> card name=this.name rating=this.rating reviews=this.reviews category=this.category reviews=this.reviews }}
+{{#each locations}}
+{{> card user=../user }}
 {{/each}}
 
 <style>
@@ -39,13 +39,15 @@
         gap: 15px;
     }
 
+    .card .actions>form {
+        padding: 0;
+    }
+
     .card .actions button.action {
         width: 25px;
         height: 25px;
         border: none;
-        color: black;
         background-color: transparent;
-        cursor: pointer;
     }
 
     .card .actions .stars {

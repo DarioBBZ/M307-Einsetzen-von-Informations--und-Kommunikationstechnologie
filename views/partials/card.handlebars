@@ -12,9 +12,10 @@
     <p>#{{category}}</p>
 
     <div class="actions">
-        <button class="action">{{{icon "heart-plus"}}}</button>
+        <button class="action" {{#if user}}{{else}}disabled{{/if}}>{{{icon "heart-plus"}}}</button>
         <div class="popup">
-            <button class="action" onclick="togglePopup(event)">{{{icon "star-plus"}}}</button>
+            <button class="action" onclick="togglePopup(event)" {{#if user}}{{else}}disabled{{/if}}>{{{icon
+                "star-full"}}}</button>
             <div class="content">
                 <div class="header">
                     <h1>Meine Bewertung</h1>
@@ -22,16 +23,16 @@
                 </div>
                 <form>
                     <div class="stars">
-                        <input type="radio" id="{{name}}-star5" name="rating" value="5" required />
-                        <label for="{{name}}-star5">{{{icon "star-full"}}}</label>
-                        <input type="radio" id="{{name}}-star4" name="rating" value="4" required />
-                        <label for="{{name}}-star4">{{{icon "star-full"}}}</label>
-                        <input type="radio" id="{{name}}-star3" name="rating" value="3" required />
-                        <label for="{{name}}-star3">{{{icon "star-full"}}}</label>
-                        <input type="radio" id="{{name}}-star2" name="rating" value="2" required />
-                        <label for="{{name}}-star2">{{{icon "star-full"}}}</label>
-                        <input type="radio" id="{{name}}-star1" name="rating" value="1" required />
-                        <label for="{{name}}-star1">{{{icon "star-full"}}}</label>
+                        <input type="radio" id="{{id}}-star5" name="rating" value="5" required />
+                        <label for="{{id}}-star5">{{{icon "star-full"}}}</label>
+                        <input type="radio" id="{{id}}-star4" name="rating" value="4" required />
+                        <label for="{{id}}-star4">{{{icon "star-full"}}}</label>
+                        <input type="radio" id="{{id}}-star3" name="rating" value="3" required />
+                        <label for="{{id}}-star3">{{{icon "star-full"}}}</label>
+                        <input type="radio" id="{{id}}-star2" name="rating" value="2" required />
+                        <label for="{{id}}-star2">{{{icon "star-full"}}}</label>
+                        <input type="radio" id="{{id}}-star1" name="rating" value="1" required />
+                        <label for="{{id}}-star1">{{{icon "star-full"}}}</label>
                     </div>
                     <textarea name="comment" placeholder="Kommentar" required></textarea>
                     <button type="submit">Speichern</button>
