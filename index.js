@@ -6,38 +6,10 @@ const db = createDB();
 
 // Home page
 server.get("/", async (req, res) => {
+  const user = await db.auth.loggedInUser(req);
   return res.render("home", {
-    user: await db.auth.loggedInUser(req),
-    data: [
-      {
-        name: "SYPROS-GYROS",
-        rating: 4.5,
-        category: "Restaurant",
-        reviews: [
-          {
-            username: "John Doe",
-            rating: 5,
-            text: "Amazing gyros! The flavors were authentic and the service was excellent.",
-          },
-          {
-            username: "Jane Smith",
-            rating: 4,
-            text: "Good food, but the wait was a bit long. Worth it for the taste though!",
-          },
-          {
-            username: "Alex99",
-            rating: 4.5,
-            text: "Loved the ambiance and the gyros were top-notch. Highly recommend!",
-          },
-        ],
-      },
-      {
-        name: "TUUBE",
-        rating: 4.5,
-        category: "Bar",
-        reviews: [],
-      },
-    ],
+    user,
+    locations: await db.locations(user.id),
   });
 });
 

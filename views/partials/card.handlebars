@@ -50,13 +50,13 @@
     <div class="reviews">
         {{#each reviews}}
         <div class="review">
-            <h2>{{username}}</h2>
+            <h2>{{name}}</h2>
             <div class="rating">
                 {{#each (stars this.rating)}}
                 {{{icon this}}}
                 {{/each}}
             </div>
-            <p>{{text}}</p>
+            <p>{{comment}}</p>
         </div>
         {{/each}}
     </div>
