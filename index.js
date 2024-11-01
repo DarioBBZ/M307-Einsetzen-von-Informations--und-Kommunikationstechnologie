@@ -4,8 +4,10 @@ import { createServer } from "./src/server.js";
 const server = createServer();
 const db = createDB();
 
+// Home page
 server.get("/", async (req, res) => {
   return res.render("home", {
+    user: await db.auth.loggedInUser(req),
     data: [
       {
         name: "SYPROS-GYROS",
@@ -41,9 +43,14 @@ server.get("/", async (req, res) => {
 
 // User management
 server.post("/login", async (req, res) => {
-  await db.auth.loginUser(req);
+  const success = await db.auth.loginUser(req);
+  if (success) {
   res.redirect("/");
+  } else {
+    res.render("alert", { message: "Login failed!" });
+  }
 });
+
 server.get("/logout", async (req, res) => {
   req.session.destroy();
   res.redirect("/");
