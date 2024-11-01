@@ -1,26 +1,19 @@
 import express from "express";
 import { engine } from "express-handlebars";
-import pg from "pg";
-const { Pool } = pg;
-import cookieParser from "cookie-parser";
 import sessions from "express-session";
 import path from "path";
 import fs from "fs";
 
-export function createApp(dbconfig) {
-  const app = express();
+export function createServer() {
+  const server = express();
 
-  app.use(express.static("public"));
-  app.use(express.urlencoded({ extended: true }));
-  app.use(cookieParser());
+  server.use(express.static("public"));
+  server.use(express.urlencoded({ extended: true }));
 
-  app.engine("handlebars", ENGINE);
-  app.set("view engine", "handlebars");
+  server.engine("handlebars", ENGINE);
+  server.set("view engine", "handlebars");
 
-  const pool = new Pool(dbconfig);
-  app.locals.pool = pool;
-
-  app.use(
+  server.use(
     sessions({
       secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
       saveUninitialized: true,
@@ -29,7 +22,7 @@ export function createApp(dbconfig) {
     })
   );
 
-  return app;
+  return server;
 }
 
 const ENGINE = engine({
