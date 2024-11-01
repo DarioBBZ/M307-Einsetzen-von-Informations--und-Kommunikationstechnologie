@@ -1,5 +1,5 @@
--- Create table for tags
-CREATE TABLE tags (
+-- Create table for categories
+CREATE TABLE categories (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
@@ -15,7 +15,7 @@ CREATE TABLE users (
 CREATE TABLE locations (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    tag_id INT REFERENCES tags(id),
+    category_id INT REFERENCES categories(id),
     street VARCHAR(255),
     house_number INT,
     zip_code INT,
@@ -28,7 +28,7 @@ CREATE TABLE reviews (
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     location_id INT REFERENCES locations(id) ON DELETE CASCADE,
     comment TEXT,
-    stars INT CHECK (stars BETWEEN 1 AND 5),
+    rating INT CHECK (rating BETWEEN 1 AND 5),
     PRIMARY KEY (user_id, location_id)
 );
 
