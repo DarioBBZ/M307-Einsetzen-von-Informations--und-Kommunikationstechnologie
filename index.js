@@ -10,6 +10,7 @@ server.get("/", async (req, res) => {
   return res.render("home", {
     user,
     locations: await db.locations.getAll(user.id),
+    categories: await db.categories.getAll(),
   });
 });
 
@@ -34,6 +35,7 @@ server.get("/favorite", async (req, res) => {
     return res.render("home", {
       user,
       locations: await db.locations.getFavorites(user.id),
+      categories: await db.categories.getAll(),
       isFavorites: true,
     });
   }

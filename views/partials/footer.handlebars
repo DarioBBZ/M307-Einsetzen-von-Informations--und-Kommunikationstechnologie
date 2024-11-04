@@ -13,8 +13,9 @@
                 <input type="text" placeholder="Name" required />
                 <select required>
                     <option value="" disabled selected>Standort Typ</option>
-                    <option value="type1">Type 1</option>
-                    <option value="type2">Type 2</option>
+                    {{#each categories}}
+                    <option value="{{name}}">{{name}}</option>
+                    {{/each}}
                 </select>
                 <div>
                     <input type="text" placeholder="Strasse" required />

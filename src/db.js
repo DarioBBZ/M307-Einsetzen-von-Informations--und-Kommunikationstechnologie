@@ -17,6 +17,9 @@ export function createDB() {
       getFavorites: async (userId) => (await db.query(locationsQuery(userId, true))).rows,
       toggleFavorite: async (userId, locationId) => toggleFavoriteLocation(db, userId, locationId),
       rate: async (userId, locationId, rating, comment) => rateLocation(db, userId, locationId, rating, comment),
+    },
+    categories: {
+      getAll: async () => (await db.query(`SELECT * FROM categories`)).rows,
     }
   }
 }
