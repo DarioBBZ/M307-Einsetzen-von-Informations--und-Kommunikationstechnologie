@@ -4,6 +4,7 @@ button,
 h1,
 h2,
 p,
+a,
 textarea {
   margin: 0;
   padding: 0;
@@ -23,8 +24,13 @@ button {
   cursor: pointer;
 }
 
-button:disabled {
+button:disabled,
+button:disabled a {
   cursor: not-allowed;
+}
+
+button:disabled a {
+  pointer-events: none;
 }
 
 main {
@@ -54,10 +60,6 @@ form.row {
 form>div {
   display: flex;
   gap: 10px;
-}
-
-form>div>* {
-  min-width: 0;
 }
 
 form input,

@@ -1,7 +1,8 @@
 <footer>
-    <button class="action" {{#if user}}{{else}}disabled{{/if}}>{{{icon "heart"}}}</button>
+    <button class="action {{#if isFavorites}}red{{/if}}" {{#unless user}}disabled{{/unless}}><a
+            href="{{#if isFavorites}}/{{else}}/favorite{{/if}}">{{{icon "heart"}}}</a></button>
     <div class="popup">
-        <button class="action" onclick="togglePopup(event)" {{#if user}}{{else}}disabled{{/if}}>{{{icon
+        <button class="action" onclick="togglePopup(event)" {{#unless user}}disabled{{/unless}}>{{{icon
             "plus"}}}</button>
         <div class="content">
             <div class="header">
