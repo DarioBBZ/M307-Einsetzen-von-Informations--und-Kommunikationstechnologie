@@ -62,5 +62,8 @@ const ENGINE = engine({
 
       return stars;
     },
+    eq: function (a, b) {
+      return a === b;
+    },
   },
 });

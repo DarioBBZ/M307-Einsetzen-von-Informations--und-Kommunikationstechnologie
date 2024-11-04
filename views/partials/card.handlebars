@@ -13,33 +13,43 @@
 
     <div class="actions">
         <form action="/favorite" method="post">
-            <fieldset {{#if user}}{{else}}disabled{{/if}}>
+            <fieldset {{#unless user}}disabled{{/unless}}>
                 <input type="hidden" name="locationId" value="{{id}}" />
                 <button class="action {{#if isFavorited}}red{{/if}}" type="submit">{{{icon "heart"}}}</button>
             </fieldset>
         </form>
         <div class="popup">
-            <button class="action" onclick="togglePopup(event)" {{#if user}}{{else}}disabled{{/if}}>{{{icon
+            <button class="action" onclick="togglePopup(event)" {{#unless user}}disabled{{/unless}}>{{{icon
                 "star-full"}}}</button>
             <div class="content">
                 <div class="header">
                     <h1>Meine Bewertung</h1>
                     <button onclick="togglePopup(event)">{{{icon "plus"}}}</button>
                 </div>
-                <form>
+                <form action="/rate" method="post">
+                    <input type="hidden" name="locationId" value="{{id}}" />
                     <div class="stars">
-                        <input type="radio" id="{{id}}-star5" name="rating" value="5" required />
+                        <input type="radio" id="{{id}}-star5" name="rating" value="5" {{#if (eq myReview.rating
+                            5)}}checked{{/if}} required />
                         <label for="{{id}}-star5">{{{icon "star-full"}}}</label>
-                        <input type="radio" id="{{id}}-star4" name="rating" value="4" required />
+
+                        <input type="radio" id="{{id}}-star4" name="rating" value="4" {{#if (eq myReview.rating
+                            4)}}checked{{/if}} required />
                         <label for="{{id}}-star4">{{{icon "star-full"}}}</label>
-                        <input type="radio" id="{{id}}-star3" name="rating" value="3" required />
+
+                        <input type="radio" id="{{id}}-star3" name="rating" value="3" {{#if (eq myReview.rating
+                            3)}}checked{{/if}} required />
                         <label for="{{id}}-star3">{{{icon "star-full"}}}</label>
-                        <input type="radio" id="{{id}}-star2" name="rating" value="2" required />
+
+                        <input type="radio" id="{{id}}-star2" name="rating" value="2" {{#if (eq myReview.rating
+                            2)}}checked{{/if}} required />
                         <label for="{{id}}-star2">{{{icon "star-full"}}}</label>
-                        <input type="radio" id="{{id}}-star1" name="rating" value="1" required />
+
+                        <input type="radio" id="{{id}}-star1" name="rating" value="1" {{#if (eq myReview.rating
+                            1)}}checked{{/if}} required />
                         <label for="{{id}}-star1">{{{icon "star-full"}}}</label>
                     </div>
-                    <textarea name="comment" placeholder="Kommentar" required></textarea>
+                    <textarea name="comment" placeholder="Kommentar" required>{{myReview.comment}}</textarea>
                     <button type="submit">Speichern</button>
                 </form>
             </div>
