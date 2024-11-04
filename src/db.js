@@ -12,8 +12,11 @@ export function createDB() {
 
   return {
     auth: new bbz307.Login("users", ["name", "password"], db),
-    locations: async (userId) => (await db.query(locationsQuery(userId))).rows,
-    toggleFavoriteLocation: async (userId, locationId) => toggleFavoriteLocation(db, userId, locationId)
+    locations: {
+      getAll: async (userId) => (await db.query(locationsQuery(userId))).rows,
+      getFavorites: async (userId) => (await db.query(locationsQuery(userId, true))).rows,
+      toggleFavorite: async (userId, locationId) => toggleFavoriteLocation(db, userId, locationId),
+    }
   }
 }
 
@@ -36,7 +39,7 @@ const toggleFavoriteLocation = async (db, userId, locationId) => {
   }
 }
 
-const locationsQuery = (userId) => `
+const locationsQuery = (userId, isFavorites) => `
 SELECT 
     l.id AS id,
     l.name AS name,
@@ -66,6 +69,8 @@ JOIN
     users u ON r.user_id = u.id
 JOIN 
     categories t ON l.category_id = t.id
+${userId ? `LEFT JOIN reviews ur ON l.id = ur.location_id AND ur.user_id = ${userId}` : ''}
+${isFavorites && userId ? `JOIN favorites f ON l.id = f.location_id AND f.user_id = ${userId}` : ''}
 GROUP BY 
     l.id, t.name;
 `;
