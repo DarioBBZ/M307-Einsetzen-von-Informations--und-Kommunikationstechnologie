@@ -64,6 +64,11 @@ const locationsQuery = (userId, isFavorites) => `
 SELECT 
     l.id AS id,
     l.name AS name,
+    l.street AS street,
+    l.house_number AS "houseNumber",
+    l.zip_code AS "zipCode",
+    l.place AS place,
+    l.country AS country,
     ROUND(AVG(r.rating), 1) AS rating,
     t.name AS category,
     ${userId ? `

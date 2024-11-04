@@ -1,17 +1,19 @@
 <div class="card">
     <h1>{{name}}</h1>
-
-    <div class="rating" onclick="this.parentElement.classList.toggle('open')">
-        <span>{{rating}}</span>
-        {{#each (stars rating)}}
-        {{{icon this}}}
-        {{/each}}
-        <span>({{reviews.length}})</span>
-    </div>
-
     <p>#{{category}}</p>
 
+    <p>{{street}} {{houseNumber}}<br>{{zipCode}} {{place}}<br>{{country}}</p>
+
+
     <div class="actions">
+        <div class="rating" onclick="this.parentElement.parentElement.classList.toggle('open')">
+            <span>{{rating}}</span>
+            {{#each (stars rating)}}
+            {{{icon this}}}
+            {{/each}}
+            <span>({{reviews.length}})</span>
+            <span class="collapse">{{{icon "chevron"}}}</span>
+        </div>
         <form action="/favorite" method="post">
             <fieldset {{#unless user}}disabled{{/unless}}>
                 <input type="hidden" name="locationId" value="{{id}}" />
@@ -19,7 +21,8 @@
             </fieldset>
         </form>
         <div class="popup">
-            <button class="action" onclick="togglePopup(event)" {{#unless user}}disabled{{/unless}}>{{{icon
+            <button class="action {{#if myReview}}gold{{/if}}" onclick="togglePopup(event)" {{#unless
+                user}}disabled{{/unless}}>{{{icon
                 "star-full"}}}</button>
             <div class="content">
                 <div class="header">

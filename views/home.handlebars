@@ -22,15 +22,22 @@
         gap: 5px;
         height: 30px;
         cursor: pointer;
-        align-self: start;
     }
 
     .card .rating>span {
         line-height: 30px;
     }
 
-    .card .rating>svg {
+    .card .rating svg {
         width: 30px;
+    }
+
+    .card .rating .collapse {
+        transition: rotate 250ms ease-in-out;
+    }
+
+    .card.open .rating .collapse {
+        rotate: 180deg;
     }
 
     .card .actions {
@@ -39,8 +46,8 @@
         gap: 15px;
     }
 
-    .card .actions>form {
-        padding: 0;
+    .card .actions .rating {
+        flex-grow: 1;
     }
 
     .card .actions button.action {
