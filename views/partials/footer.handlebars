@@ -1,7 +1,7 @@
 <footer>
-    <button class="action {{#if isFavorites}}red{{/if}}" {{#unless user}}disabled{{/unless}}><a
+    <button class="left action {{#if isFavorites}}red{{/if}}" {{#unless user}}disabled{{/unless}}><a
             href="{{#if isFavorites}}/{{else}}/favorite{{/if}}">{{{icon "heart"}}}</a></button>
-    <div class="popup">
+    <div class="right popup">
         <button class="action" onclick="togglePopup(event)" {{#unless user}}disabled{{/unless}}>{{{icon
             "plus"}}}</button>
         <div class="content">
@@ -40,17 +40,18 @@
         color: white;
     }
 
-    footer>* {
+    footer .left,
+    footer .right {
         position: absolute !important;
         bottom: 15px;
         padding: 0;
     }
 
-    footer>*:first-child {
+    footer .left {
         left: 15px;
     }
 
-    footer>*:last-child {
+    footer .right {
         right: 15px;
     }
 
@@ -61,5 +62,13 @@
         border-radius: 50%;
         border: none;
         background-color: #333;
+    }
+
+    footer .popup .content {
+        right: 0;
+    }
+
+    footer .popup.open::after {
+        right: 15px;
     }
 </style>

@@ -48,7 +48,6 @@ form {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 10px;
   text-align: center;
   margin: 0;
 }
@@ -60,6 +59,11 @@ form.row {
 form>div {
   display: flex;
   gap: 10px;
+}
+
+/* Fix overflowing inputs in form */
+form>div>input {
+  min-width: 0;
 }
 
 form input,
@@ -101,4 +105,8 @@ form p {
 
 .red {
   color: red;
+}
+
+.gold {
+  color: gold;
 }

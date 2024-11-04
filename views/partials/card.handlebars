@@ -4,7 +4,6 @@
 
     <p>{{street}} {{houseNumber}}<br>{{zipCode}} {{place}}<br>{{country}}</p>
 
-
     <div class="actions">
         <div class="rating" onclick="this.parentElement.parentElement.classList.toggle('open')">
             <span>{{rating}}</span>
@@ -21,7 +20,7 @@
             </fieldset>
         </form>
         <div class="popup">
-            <button class="action {{#if myReview}}gold{{/if}}" onclick="togglePopup(event)" {{#unless
+            <button class="action {{#if myReview.rating}}gold{{/if}}" onclick="togglePopup(event)" {{#unless
                 user}}disabled{{/unless}}>{{{icon
                 "star-full"}}}</button>
             <div class="content">
