@@ -16,6 +16,7 @@ export function createDB() {
       getAll: async (userId) => (await db.query(locationsQuery(userId))).rows,
       getFavorites: async (userId) => (await db.query(locationsQuery(userId, true))).rows,
       toggleFavorite: async (userId, locationId) => toggleFavoriteLocation(db, userId, locationId),
+      rate: async (userId, locationId, rating, comment) => rateLocation(db, userId, locationId, rating, comment),
     }
   }
 }
@@ -39,6 +40,26 @@ const toggleFavoriteLocation = async (db, userId, locationId) => {
   }
 }
 
+const rateLocation = async (db, userId, locationId, rating, comment) => {
+  const { rowCount } = await db.query(
+    `SELECT 1 FROM reviews WHERE user_id = $1 AND location_id = $2`,
+    [userId, locationId]
+  );
+
+  if (rowCount === 0) {
+    await db.query(
+      `INSERT INTO reviews (user_id, location_id, rating, comment) VALUES ($1, $2, $3, $4)`,
+      [userId, locationId, rating, comment]
+    );
+  }
+  else {
+    await db.query(
+      `UPDATE reviews SET rating = $3, comment = $4 WHERE user_id = $1 AND location_id = $2`,
+      [userId, locationId, rating, comment]
+    );
+  }
+}
+
 const locationsQuery = (userId, isFavorites) => `
 SELECT 
     l.id AS id,
@@ -51,8 +72,16 @@ SELECT
             FROM favorites f
             WHERE f.location_id = l.id AND f.user_id = ${userId}
         ) AS "isFavorited",
+        COALESCE(
+           JSON_BUILD_OBJECT(
+               'rating', ur.rating,
+               'comment', ur.comment
+           ), 
+           NULL
+        ) AS "myReview",
     ` : `
         FALSE AS "isFavorited",
+        NULL AS "myReview",
     `}
     JSON_AGG(
         JSON_BUILD_OBJECT(
@@ -72,5 +101,5 @@ JOIN
 ${userId ? `LEFT JOIN reviews ur ON l.id = ur.location_id AND ur.user_id = ${userId}` : ''}
 ${isFavorites && userId ? `JOIN favorites f ON l.id = f.location_id AND f.user_id = ${userId}` : ''}
 GROUP BY 
-    l.id, t.name;
+    l.id, t.name ${userId ? `,ur.rating,ur.comment` : ``};
 `;
