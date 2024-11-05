@@ -42,7 +42,9 @@ server.post("/login", async (req, res) => {
   if (success) {
     res.redirect("/");
   } else {
-    res.render("alert", { message: "Login failed!" });
+    res.send(
+      '<script>alert("Login failed!"); window.location.href = "/"; </script>'
+    );
   }
 });
 server.get("/logout", async (req, res) => {
