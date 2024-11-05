@@ -40,7 +40,7 @@ main {
   margin: 25px auto 75px;
   padding: 0 80px;
   gap: 25px;
-  align-items: center;
+  align-items: start;
 }
 
 @media screen and (max-width: 700px) {
