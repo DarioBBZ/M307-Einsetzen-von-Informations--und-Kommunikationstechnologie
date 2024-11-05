@@ -4,7 +4,6 @@ INSERT INTO categories (name) VALUES
     ('Bar'),
     ('Cafe');
 
-
 -- Insert users
 -- The password "$2a$10$jEIoOCwwgIkBGq1Z8Iq9SOKo10lPW1UVhvnhdcX4i.tkdPAvKbALe" 
 -- is the bcrypt hash of "1234" with 10 rounds of encryption
