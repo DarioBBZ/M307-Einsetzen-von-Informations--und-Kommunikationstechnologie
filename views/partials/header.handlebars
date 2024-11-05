@@ -1,13 +1,13 @@
 <header>
     {{#if user}}
-    <form class="row" action="/logout">
+    <form action="/logout">
         <p>Logged in as <b>{{user.name}}</b></p>
         <button type="submit">LOG OUT</button>
     </form>
     {{else}}
-    <form class="row" action="/login" method="post">
-        <input type="text" name="name" placeholder="Username:" required>
-        <input type="password" name="password" placeholder="Password:" required>
+    <form action="/login" method="post">
+        <input type="text" name="name" placeholder="Username:" required />
+        <input type="password" name="password" placeholder="Password:" required />
         <button type="submit">LOG IN</button>
     </form>
     {{/if}}
@@ -24,5 +24,16 @@
 
     header button {
         color: black;
+    }
+
+    header form {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    @media screen and (max-width: 350px) {
+        header button {
+            flex: 0 0 100%
+        }
     }
 </style>

@@ -6,22 +6,30 @@
     .card,
     .card .reviews .review {
         padding: 15px;
-        gap: 5px;
+        gap: 10px;
         display: flex;
         flex-direction: column;
     }
 
     .card {
-        width: 100%;
         border: 1px solid #ccc;
         border-radius: 10px;
+        box-sizing: border-box;
+        min-width: 200px;
+    }
+
+    .card h1 {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     .card .rating {
         display: flex;
         gap: 5px;
         height: 30px;
-        cursor: pointer;
+        border: none;
+        background-color: transparent;
     }
 
     .card .rating>span {
@@ -30,6 +38,20 @@
 
     .card .rating svg {
         width: 30px;
+    }
+
+    @media screen and (max-width: 350px) {
+        .card .rating {
+            height: 20px;
+        }
+
+        .card .rating>span {
+            line-height: 20px;
+        }
+
+        .card .rating svg {
+            width: 20px;
+        }
     }
 
     .card .rating .collapse {
@@ -41,16 +63,23 @@
     }
 
     .card .actions {
+        flex: 1;
         display: flex;
         justify-content: flex-end;
+        align-items: end;
+        gap: 15px;
+        flex-wrap: wrap-reverse;
+    }
+
+    .card .actions .icons {
+        flex-grow: 1;
+        display: flex;
+        justify-content: end;
+        align-items: center;
         gap: 15px;
     }
 
-    .card .actions .rating {
-        flex-grow: 1;
-    }
-
-    .card .actions button.action {
+    .card .actions .icons button.icon {
         width: 25px;
         height: 25px;
         border: none;
@@ -84,7 +113,7 @@
 
     .card .reviews {
         margin: -15px;
-        margin-top: 15px;
+        margin-top: 5px;
         max-height: 0;
         overflow: hidden;
         transition: max-height 250ms ease-in-out;
@@ -93,10 +122,11 @@
     .card.open .reviews {
         max-height: 250px;
         overflow-y: auto;
+        border-top: 1px solid #ccc;
     }
 
     .card .reviews .review {
-        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
         padding: 15px;
     }
 </style>

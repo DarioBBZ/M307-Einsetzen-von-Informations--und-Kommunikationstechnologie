@@ -24,6 +24,7 @@ button {
   cursor: pointer;
 }
 
+form fieldset:disabled button,
 button:disabled,
 button:disabled a {
   cursor: not-allowed;
@@ -34,14 +35,19 @@ button:disabled a {
 }
 
 main {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
   margin: 25px auto 75px;
-  padding: 25px;
+  padding: 0 80px;
   gap: 25px;
   align-items: center;
-  max-width: 750px;
-  min-width: 350px;
+}
+
+@media screen and (max-width: 700px) {
+  main {
+    grid-template-columns: 1fr;
+    padding: 0 25px;
+  }
 }
 
 form {
@@ -72,6 +78,7 @@ form textarea {
   border: 1px solid black;
   border-radius: 3px;
   height: 30px;
+  flex: 1 1 auto;
 }
 
 form textarea {
@@ -93,10 +100,6 @@ form fieldset {
   border: none;
   padding: 0;
   margin: 0;
-}
-
-form fieldset:disabled button {
-  cursor: not-allowed;
 }
 
 form p {
