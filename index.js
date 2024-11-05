@@ -7,7 +7,7 @@ const db = new Database();
 // Home page
 server.get("/", async (req, res) => {
   const user = await db.auth.loggedInUser(req);
-  return res.render("home", {
+  return res.render("main", {
     user,
     locations: await db.locations.getAll(user.id),
     categories: await db.categories.getAll(),
@@ -18,7 +18,7 @@ server.get("/", async (req, res) => {
 server.get("/favorite", async (req, res) => {
   const user = await db.auth.loggedInUser(req);
   if (user) {
-    return res.render("home", {
+    return res.render("main", {
       user,
       locations: await db.locations.getFavorites(user.id),
       categories: await db.categories.getAll(),
