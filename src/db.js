@@ -14,39 +14,37 @@ export default class Database {
   }
 
   categories = {
-    getAll: async () => (await this.db.query(`SELECT * FROM categories`)).rows,
+    getAll: async () => (await this.db.query("SELECT * FROM categories")).rows,
   };
 
   reviews = {
     getByUser: async (userId) =>
       (
-        await this.db.query(`SELECT * FROM reviews WHERE user_id = $1`, [
+        await this.db.query("SELECT * FROM reviews WHERE user_id = $1", [
           userId,
         ])
       ).rows,
     getByLocation: async (locationId) =>
       (
         await this.db.query(
-          `
-      SELECT * FROM reviews r JOIN users u ON r.user_id = u.id 
-      WHERE location_id = $1`,
+          "SELECT * FROM reviews r JOIN users u ON r.user_id = u.id WHERE location_id = $1",
           [locationId]
         )
       ).rows,
-    create: async (userId, locationId, rating, comment) => {
+    createOrUpdate: async (userId, locationId, rating, comment) => {
       const { rowCount } = await this.db.query(
-        `SELECT 1 FROM reviews WHERE user_id = $1 AND location_id = $2`,
+        "SELECT 1 FROM reviews WHERE user_id = $1 AND location_id = $2",
         [userId, locationId]
       );
 
       if (rowCount === 0) {
         await this.db.query(
-          `INSERT INTO reviews (user_id, location_id, rating, comment) VALUES ($1, $2, $3, $4)`,
+          "INSERT INTO reviews (user_id, location_id, rating, comment) VALUES ($1, $2, $3, $4)",
           [userId, locationId, rating, comment]
         );
       } else {
         await this.db.query(
-          `UPDATE reviews SET rating = $3, comment = $4 WHERE user_id = $1 AND location_id = $2`,
+          "UPDATE reviews SET rating = $3, comment = $4 WHERE user_id = $1 AND location_id = $2",
           [userId, locationId, rating, comment]
         );
       }
@@ -56,24 +54,24 @@ export default class Database {
   favorites = {
     getByUser: async (userId) =>
       (
-        await this.db.query(`SELECT * FROM favorites WHERE user_id = $1`, [
+        await this.db.query("SELECT * FROM favorites WHERE user_id = $1", [
           userId,
         ])
       ).rows,
     toggle: async (userId, locationId) => {
       const { rowCount } = await this.db.query(
-        `SELECT 1 FROM favorites WHERE user_id = $1 AND location_id = $2`,
+        "SELECT 1 FROM favorites WHERE user_id = $1 AND location_id = $2",
         [userId, locationId]
       );
 
       if (rowCount === 0) {
         await this.db.query(
-          `INSERT INTO favorites (user_id, location_id) VALUES ($1, $2)`,
+          "INSERT INTO favorites (user_id, location_id) VALUES ($1, $2)",
           [userId, locationId]
         );
       } else {
         await this.db.query(
-          `DELETE FROM favorites WHERE user_id = $1 AND location_id = $2`,
+          "DELETE FROM favorites WHERE user_id = $1 AND location_id = $2",
           [userId, locationId]
         );
       }
@@ -82,18 +80,11 @@ export default class Database {
 
   locations = {
     getAll: async (userId) => {
-      const { rows: locations } = await this.db.query(`
-        SELECT l.id AS id,
-          l.name AS name,
-          l.street AS street,
-          l.house_number AS "houseNumber",
-          l.zip_code AS "zipCode",
-          l.place AS place,
-          l.country AS country,
-          l.category_id AS category_id,
-          ROUND(COALESCE(AVG(r.rating), 0), 1) AS rating
+      const { rows: locations } = await this.db.query(
+        `SELECT l.*, ROUND(COALESCE(AVG(r.rating), 0), 1) AS rating
         FROM locations l LEFT JOIN reviews r ON l.id = r.location_id
-        GROUP BY l.id, l.name`);
+        GROUP BY l.id`
+      );
       const myReviews = await this.reviews.getByUser(userId);
       const allCategories = await this.categories.getAll();
       const myFavorites = await this.favorites.getByUser(userId);
@@ -115,19 +106,10 @@ export default class Database {
     },
     getFavorites: async (userId) => {
       const { rows: locations } = await this.db.query(
-        `
-        SELECT l.id AS id,
-          l.name AS name,
-          l.street AS street,
-          l.house_number AS "houseNumber",
-          l.zip_code AS "zipCode",
-          l.place AS place,
-          l.country AS country,
-          l.category_id AS category_id,
-          ROUND(COALESCE(AVG(r.rating), 0), 1) AS rating
+        `SELECT l.*, ROUND(COALESCE(AVG(r.rating), 0), 1) AS rating
         FROM locations l JOIN favorites f ON l.id = f.location_id
         LEFT JOIN reviews r ON f.location_id = r.location_id WHERE f.user_id = $1
-        GROUP BY l.id, l.name`,
+        GROUP BY l.id`,
         [userId]
       );
       const myReviews = await this.reviews.getByUser(userId);
@@ -154,10 +136,20 @@ export default class Database {
       country,
       categoryId
     ) => {
-      await this.db.query(
-        `INSERT INTO locations (name, street, house_number, zip_code, place, country, category_id) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-        [name, street, houseNumber, zipCode, place, country, categoryId]
+      // check if name is unique
+      const { rowCount } = await this.db.query(
+        "SELECT 1 FROM locations WHERE name = $1",
+        [name]
       );
+
+      if (rowCount === 0) {
+        await this.db.query(
+          "INSERT INTO locations (name, street, house_number, zip_code, place, country, category_id) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+          [name, street, houseNumber, zipCode, place, country, categoryId]
+        );
+      } else {
+        throw new Error(`Location name "${name}" is already taken!`);
+      }
     },
   };
 }

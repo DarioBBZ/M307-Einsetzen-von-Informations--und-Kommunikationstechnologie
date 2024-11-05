@@ -38,13 +38,10 @@ server.post("/favorite", async (req, res) => {
 
 // User management
 server.post("/login", async (req, res) => {
-  const success = await db.auth.loginUser(req);
-  if (success) {
+  if (await db.auth.loginUser(req)) {
     res.redirect("/");
   } else {
-    res.send(
-      '<script>alert("Login failed!"); window.location.href = "/"; </script>'
-    );
+    res.render("alert", { message: "Login failed!" });
   }
 });
 server.get("/logout", async (req, res) => {
@@ -56,7 +53,7 @@ server.get("/logout", async (req, res) => {
 server.post("/review", async (req, res) => {
   const user = await db.auth.loggedInUser(req);
   if (user) {
-    await db.reviews.create(
+    await db.reviews.createOrUpdate(
       user.id,
       req.body.locationId,
       req.body.rating,
@@ -69,17 +66,20 @@ server.post("/review", async (req, res) => {
 
 // Create location
 server.post("/create", async (req, res) => {
-  const user = await db.auth.loggedInUser(req);
-  if (user) {
-    await db.locations.create(
-      req.body.name,
-      req.body.street,
-      req.body.houseNumber,
-      req.body.zipCode,
-      req.body.place,
-      req.body.country,
-      req.body.categoryId
-    );
+  if (await db.auth.loggedInUser(req)) {
+    try {
+      await db.locations.create(
+        req.body.name,
+        req.body.street,
+        req.body.houseNumber,
+        req.body.zipCode,
+        req.body.place,
+        req.body.country,
+        req.body.categoryId
+      );
+    } catch ({ message }) {
+      return res.render("alert", { message });
+    }
   }
   // Redirect back to the previous page
   res.redirect(req.get("Referer") || "/");
