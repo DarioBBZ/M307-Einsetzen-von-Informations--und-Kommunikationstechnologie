@@ -11,7 +11,7 @@ erDiagram
 
     users {
         int id PK
-        string name
+        string name UK
         string password
     }
     reviews {
@@ -26,7 +26,7 @@ erDiagram
     }
     locations {
         int id PK
-        string name
+        string name UK
         int category_id FK
         string street
         int house_number
@@ -36,6 +36,6 @@ erDiagram
     }
     categories {
         int id PK
-        string name
+        string name UK
     }
 ```
