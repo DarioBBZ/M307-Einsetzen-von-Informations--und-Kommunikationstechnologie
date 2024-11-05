@@ -1,31 +1,32 @@
 <footer>
-    <button class="left action {{#if isFavorites}}red{{/if}}" {{#unless user}}disabled{{/unless}}><a
-            href="{{#if isFavorites}}/{{else}}/favorite{{/if}}">{{{icon "heart"}}}</a></button>
+    <button class="left action {{#if isFavoritePage}}red{{/if}}" {{#unless user}}disabled{{/unless}}><a
+            href="{{#if isFavoritePage}}/{{else}}/favorite{{/if}}">{{{icon "heart"}}}</a></button>
     <div class="right popup">
-        <button class="action" onclick="togglePopup(event)" {{#unless user}}disabled{{/unless}}>{{{icon
-            "plus"}}}</button>
+        <button class="action" onclick="togglePopup(event)" {{#unless user}}disabled{{/unless}}>
+            {{{icon "plus"}}}
+        </button>
         <div class="content">
             <div class="header">
                 <h1>Neuer Standort</h1>
                 <button onclick="togglePopup(event)">{{{icon "plus"}}}</button>
             </div>
-            <form>
-                <input type="text" placeholder="Name" required />
-                <select required>
+            <form action="/create" method="post">
+                <input type="text" name="name" placeholder="Name" required />
+                <select name="categoryId" required>
                     <option value="" disabled selected>Standort Typ</option>
                     {{#each categories}}
-                    <option value="{{name}}">{{name}}</option>
+                    <option value="{{id}}">{{name}}</option>
                     {{/each}}
                 </select>
                 <div>
-                    <input type="text" placeholder="Strasse" required />
-                    <input type="text" placeholder="Nr." required />
+                    <input type="text" name="street" placeholder="Strasse" required />
+                    <input type="number" name="houseNumber" placeholder="Nr." required />
                 </div>
                 <div>
-                    <input type="text" placeholder="PLZ" required />
-                    <input type="text" placeholder="Ort" required />
+                    <input text="number" name="zipCode" placeholder="PLZ" required />
+                    <input type="text" name="place" placeholder="Ort" required />
                 </div>
-                <input type="text" placeholder="Land" required />
+                <input type="text" name="country" placeholder="Land" required />
                 <button type="submit">Hinzufügen</button>
             </form>
         </div>
